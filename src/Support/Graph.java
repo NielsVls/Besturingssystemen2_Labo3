@@ -33,8 +33,8 @@ public class Graph {
         xAxis.setLabel("Percentiel bedieningstijd");
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(0);
-        xAxis.setUpperBound(400);
-        xAxis.setTickUnit(40);
+        xAxis.setUpperBound(100);
+        xAxis.setTickUnit(10);
         yAxis.setLabel("Genormaliseerde omlooptijd");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
@@ -126,8 +126,8 @@ public class Graph {
         xAxis.setLabel("Percentiel bedieningstijd");
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(0);
-        xAxis.setUpperBound(400);
-        xAxis.setTickUnit(40);
+        xAxis.setUpperBound(100);
+        xAxis.setTickUnit(10);
         yAxis.setLabel("Wachttijd");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
@@ -225,7 +225,7 @@ public class Graph {
             if (aantal % percentielSize == 0 && aantal != 0) {
                 tatnorm = tatnorm / percentielSize ;
                 excute = excute / percentielSize;
-                series.getData().add(new XYChart.Data(excute, tatnorm));
+                series.getData().add(new XYChart.Data(excute/4, tatnorm));
                 tatnorm = 0;
                 excute = 0;
             }
@@ -252,7 +252,7 @@ public class Graph {
             if (aantal % percentielSize == 0 && aantal != 0) {
                 waittime = waittime / percentielSize;
                 excute = excute / percentielSize;
-                series.getData().add(new XYChart.Data(excute, waittime));
+                series.getData().add(new XYChart.Data(excute/4, waittime));
                 waittime = 0;
                 excute = 0;
             }
