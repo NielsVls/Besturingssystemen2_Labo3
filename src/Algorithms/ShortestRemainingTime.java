@@ -11,80 +11,70 @@ public class ShortestRemainingTime extends Scheduler {
 
     @Override
     public PriorityQueue<Process> schedule(Queue<Process> input) {
-        Queue<Process> que = new LinkedList<>();
 
-        for (Process p : input) {
-            que.add(new Process(p));
+        int tijdslot = 0;
+
+        Queue<Process> queue = new LinkedList<>();
+
+        for (Process process : input) {
+            queue.add(new Process(process));
         }
 
+        PriorityQueue<Process> voltooid = new PriorityQueue<>();
+        PriorityQueue<Process> wachtende = new PriorityQueue<>(10,(a, b)->a.getServicetime()-b.getServicetime());
+        PriorityQueue<Process> huidige = new PriorityQueue<>();
+        Process hulp;
 
-        //Verschillende que's aand de hand van waar het proces zich bevindt
-        PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        PriorityQueue<Process> waitingProcesses = new PriorityQueue<Process>(10,(a, b)->a.getServicetime()-b.getServicetime());
-        PriorityQueue<Process> currentProcess = new PriorityQueue<>();
-        Process temp;
+        while(voltooid.size()!= input.size()){
 
-        //counter duidt op welk timeslot de processor zich bevindt
-        int count = 0;
+            if(!huidige.isEmpty()){
 
-        //Loop blijft gaan tot alle processen afgerond zijn
-        while(finishedProcesses.size()!=input.size()){
+                hulp=huidige.peek();
+                hulp.decreaseServicetime();
 
-            if(!currentProcess.isEmpty()){
-                //procces stond al van vorige doorgaan op de processor-> service time needed moet eerst verlaagd worden
-                temp=currentProcess.peek();
-                temp.decreaseServicetime();
-                if (temp.getServicetime()==0){
+                if (hulp.getServicetime()==0){
+                    hulp=huidige.poll();
 
-                    temp=currentProcess.poll();
+                    assert hulp != null;
+                    hulp.setEndtime(tijdslot);
+                    hulp.calculate();
 
-                    //lokale parameter instellen en andere uitrekenen
-                    temp.setEndtime(count);
-                    temp.calculate();
+                    voltooid.add(hulp);
 
-                    finishedProcesses.add(temp);
-
-                    //globale parameters updaten
-                    waittime += temp.getWaittime();
-                    tatnorm += temp.getTatnorm();
-                    tat += temp.getTat();
+                    waittime += hulp.getWaittime();
+                    tatnorm += hulp.getTatnorm();
+                    tat += hulp.getTat();
                 }
             }
 
-            //check of er processen zijn die aan de wachtrij mogen worden toegevoegd
-            while(que.peek() != null && que.peek().getArrivaltime()<=count)
-                waitingProcesses.add(que.poll());
+            while(queue.peek() != null && queue.peek().getArrivaltime()<=tijdslot)
+                wachtende.add(queue.poll());
 
-          /*  if(waitingProcesses.isEmpty() && currentProcess.isEmpty()){
+            if(huidige.isEmpty() && !wachtende.isEmpty()){
+
+                hulp=wachtende.poll();
+
+                hulp.setStarttime(tijdslot);
+
+                huidige.add(hulp);
+
+            } else if (!huidige.isEmpty() && !wachtende.isEmpty()){
+                hulp=huidige.peek();
 
 
-            }*/
-            if(currentProcess.isEmpty() && !waitingProcesses.isEmpty()){
-                //Uit te voeren process uit de wachtrij halen
-                temp=waitingProcesses.poll();
+                if(hulp.getServicetimeneeded()>wachtende.peek().getServicetimeneeded()){
+                    hulp=huidige.poll();
+                    Process process=wachtende.peek();
+                    assert process != null;
+                    if(process.getStarttime()==0)
+                        process.setStarttime(tijdslot);
 
-                //Parmeters instellen
-                temp.setStarttime(count);
-
-                //SupportClasses.Process op de processor zetten
-                currentProcess.add(temp);
-
-            } else if (!currentProcess.isEmpty() && !waitingProcesses.isEmpty()){
-                temp=currentProcess.peek();
-
-                //wanneer er processen wachten met lagere servicetime needed -> switchen
-                if(temp.getServicetimeneeded()>waitingProcesses.peek().getServicetimeneeded()){
-                    temp=currentProcess.poll();
-                    Process p=waitingProcesses.peek();
-                    if(p.getStarttime()==0)
-                        p.setStarttime(count);
-
-                    currentProcess.add(waitingProcesses.poll());
-                    waitingProcesses.add(temp);
+                    huidige.add(wachtende.poll());
+                    wachtende.add(hulp);
                 }
             }
 
-            count++;
+            tijdslot++;
 
         }
         waittime = waittime / input.size();
@@ -92,7 +82,7 @@ public class ShortestRemainingTime extends Scheduler {
         tat = tat / input.size();
 
         System.out.println("SRT: \tWachttijd: " + waittime + "   \tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
-        return finishedProcesses;
+        return voltooid;
     }
 
     @Override

@@ -19,8 +19,8 @@ public class RoundRobin extends Scheduler{
 
         Queue<Process> que = new LinkedList<>();
 
-        for (Process p : queue) {
-            que.add(new Process(p));
+        for (Process process : queue) {
+            que.add(new Process(process));
         }
 
         PriorityQueue<Process> readyQue = new PriorityQueue<>();

@@ -8,51 +8,43 @@ public class ShortestJobFirst extends Scheduler {
 
     @Override
     public PriorityQueue<Process> schedule(Queue<Process> input) {
-        Queue<Process> que = new LinkedList<>();
+        Queue<Process> queue = new LinkedList<>();
 
-        for (Process p : input) {
-            que.add(new Process(p));
+        for (Process process : input) {
+            queue.add(new Process(process));
         }
 
 
         //Verschillende que's aand de hand van waar het proces zich bevindt
-        PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        PriorityQueue<Process> waitingProcesses = new PriorityQueue<>(10, (a, b) -> a.getServicetime() - b.getServicetime());
+        PriorityQueue<Process> voltooid = new PriorityQueue<>();
+        PriorityQueue<Process> wachtende = new PriorityQueue<>(10, (a, b) -> a.getServicetime() - b.getServicetime());
 
-        Process temp;
+        Process hulp;
 
-        //counter duidt op welk timeslot de processor zich bevindt
-        int count = 0;
+        int tijdslot = 0;
 
-        //Loop blijft gaan tot alle processen afgerond zijn
-        while(finishedProcesses.size()!=input.size()){
+        while(voltooid.size()!=input.size()){
 
-            //check of er processen zijn die aan de wachtrij mogen worden toegevoegd
-            while(que.peek() != null && que.peek().getArrivaltime()<=count)
-                waitingProcesses.add(que.poll());
+            while(queue.peek() != null && queue.peek().getArrivaltime()<=tijdslot)
+                wachtende.add(queue.poll());
 
-            //process uitvoeren als er één klaar is om uitgevoerd te worden, vervolgens de count aanpassen
-            if (!waitingProcesses.isEmpty()) {
-                //Uit te voeren process uit de wachtrij halen
-                temp=waitingProcesses.poll();
+            if (!wachtende.isEmpty()) {
 
-                //Parmeters instellen
-                temp.setStarttime(count);
-                count += temp.getServicetime();
-                temp.setEndtime(count);
+                hulp=wachtende.poll();
 
-                //lokale parameters berekenen
-                temp.calculate();
+                hulp.setStarttime(tijdslot);
+                tijdslot += hulp.getServicetime();
+                hulp.setEndtime(tijdslot);
 
-                //process toevoegen aan de finished lijst
-                finishedProcesses.add(temp);
+                hulp.calculate();
 
-                //globale parameters updaten
-                waittime += temp.getWaittime();
-                tatnorm += temp.getTatnorm();
-                tat += temp.getTat();
+                voltooid.add(hulp);
+
+                waittime += hulp.getWaittime();
+                tatnorm += hulp.getTatnorm();
+                tat += hulp.getTat();
             }else {
-                count++;
+                tijdslot++;
             }
 
         }
@@ -62,7 +54,7 @@ public class ShortestJobFirst extends Scheduler {
         tat = tat / input.size();
 
         System.out.println("SJF: \tWachttijd: " + waittime + "\tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
-        return finishedProcesses;
+        return voltooid;
     }
 
     @Override
