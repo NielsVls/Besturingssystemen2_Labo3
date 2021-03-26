@@ -17,7 +17,7 @@ public class ShortestJobFirst extends Scheduler {
 
         //Verschillende que's aand de hand van waar het proces zich bevindt
         PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        PriorityQueue<Process> waitingProcesses = new PriorityQueue<Process>(10,(a, b)->a.getServicetime()-b.getServicetime());
+        PriorityQueue<Process> waitingProcesses = new PriorityQueue<>(10, (a, b) -> a.getServicetime() - b.getServicetime());
 
         Process temp;
 

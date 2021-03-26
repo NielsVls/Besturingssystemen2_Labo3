@@ -21,7 +21,7 @@ public class HighestResponseRatioNext extends Scheduler {
             q.add(new Process(p));
         }
 
-        //repeating algorithm untill queue is empty
+        //repeating algorithm until queue is empty
         while(finishedProcesses.size()!= queue.size()){
 
             while(q.peek() != null && q.peek().getArrivaltime()<= timeslot){

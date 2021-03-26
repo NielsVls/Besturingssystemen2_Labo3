@@ -6,19 +6,9 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-/**
- * The class ShortestRemainingTime is an extension class of the abstract class Scheduler
- * The three methods of the Scheduler have to be overwritten.
- * @author pellereyniers and wouterlegiest
- */
 public class ShortestRemainingTime extends Scheduler {
 
-    /**
-     * Method for executing the algorithm based on a single input que
-     * Preferred method for the ShortestRemainingTime algorithm.
-     * @param input The input que, contains all processes
-     * @return que of finished processes with information on their processing
-     */
+
     @Override
     public PriorityQueue<Process> schedule(Queue<Process> input) {
         Queue<Process> que = new LinkedList<>();

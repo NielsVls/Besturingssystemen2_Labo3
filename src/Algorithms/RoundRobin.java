@@ -25,7 +25,8 @@ public class RoundRobin extends Scheduler{
 
         PriorityQueue<Process> readyQue = new PriorityQueue<>();
         PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        Process currentScheduledProcess = null, tempProcess;
+        Process currentScheduledProcess = null;
+        Process tempProcess;
 
         int counter = 0;
 
