@@ -39,11 +39,11 @@ public class Main extends Application {
             case "1c":
                 graph.TatNorm(stage,50000);break;
             case "2a":
-                graph.Wait(stage,10000);break;
+                graph.Wacht(stage,10000);break;
             case "2b":
-                graph.Wait(stage,20000);break;
+                graph.Wacht(stage,20000);break;
             case "2c":
-                graph.Wait(stage,50000);break;
+                graph.Wacht(stage,50000);break;
             default:
                 System.out.println("Dit was geen geldige keuze."); break;
         }

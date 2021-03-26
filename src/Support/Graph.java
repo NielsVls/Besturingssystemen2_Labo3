@@ -116,7 +116,7 @@ public class Graph {
     }
 
     //functie om Wachttijd uit te zetten in functie van de bedieningstijd
-    public void Wait(Stage stage, int amount) throws ParserConfigurationException, SAXException, IOException {
+    public void Wacht(Stage stage, int amount) throws ParserConfigurationException, SAXException, IOException {
         processes = p.createProcess(amount);
         stage.setTitle("Wachttijd bij " + amount + " processen");
 

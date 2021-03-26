@@ -38,8 +38,7 @@ public class MultiLevelFeedback extends Scheduler {
 
             if (huidigeSlice == hulpteller)
                 swap = true;
-            else if (!huidige.isEmpty()) {
-                if (huidige.peek().getServicetijd() == 0)
+            else if (!huidige.isEmpty() && huidige.peek().getServicetijd() == 0) {
                     swap = true;
             }
 

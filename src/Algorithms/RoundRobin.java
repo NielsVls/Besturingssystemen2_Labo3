@@ -70,7 +70,6 @@ public class RoundRobin extends Scheduler{
                 }else {
                     gereed.add(hulp);
                 }
-                hulp=null;
             }
 
             //process op de processor zetten en counter juist zetten
@@ -87,7 +86,6 @@ public class RoundRobin extends Scheduler{
                     hulp.setStarttijd(tijdslot);
                     huidige=hulp;
                 }
-                hulp=null;
                 swap=false;
             }
             tijdslot++;
