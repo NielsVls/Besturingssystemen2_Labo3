@@ -6,9 +6,9 @@ import Support.Process;
 
 
 public abstract class Scheduler {
-    double tat;
-    double tatnorm;
-    double waittime;
+    double omlooptijd;
+    double normomlooptijd;
+    double wachttijd;
 
     public abstract PriorityQueue<Process> schedule(Queue<Process> q);
     public abstract PriorityQueue<Process> schedule(Queue<Process> q, int slice);

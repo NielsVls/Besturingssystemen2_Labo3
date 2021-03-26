@@ -17,7 +17,7 @@ public class ShortestJobFirst extends Scheduler {
 
         //Verschillende que's aand de hand van waar het proces zich bevindt
         PriorityQueue<Process> voltooid = new PriorityQueue<>();
-        PriorityQueue<Process> wachtende = new PriorityQueue<>(10, (a, b) -> a.getServicetime() - b.getServicetime());
+        PriorityQueue<Process> wachtende = new PriorityQueue<>(10, (a, b) -> a.getServicetijd() - b.getServicetijd());
 
         Process hulp;
 
@@ -25,35 +25,35 @@ public class ShortestJobFirst extends Scheduler {
 
         while(voltooid.size()!=input.size()){
 
-            while(queue.peek() != null && queue.peek().getArrivaltime()<=tijdslot)
+            while(queue.peek() != null && queue.peek().getAankomsttijd()<=tijdslot)
                 wachtende.add(queue.poll());
 
             if (!wachtende.isEmpty()) {
 
                 hulp=wachtende.poll();
 
-                hulp.setStarttime(tijdslot);
-                tijdslot += hulp.getServicetime();
-                hulp.setEndtime(tijdslot);
+                hulp.setStarttijd(tijdslot);
+                tijdslot += hulp.getServicetijd();
+                hulp.setEindtijd(tijdslot);
 
                 hulp.calculate();
 
                 voltooid.add(hulp);
 
-                waittime += hulp.getWaittime();
-                tatnorm += hulp.getTatnorm();
-                tat += hulp.getTat();
+                wachttijd += hulp.getWachttijd();
+                normomlooptijd += hulp.getNormomlooptijd();
+                omlooptijd += hulp.getOmlooptijd();
             }else {
                 tijdslot++;
             }
 
         }
 
-        waittime = waittime / input.size();
-        tatnorm = tatnorm / input.size();
-        tat = tat / input.size();
+        wachttijd = wachttijd / input.size();
+        normomlooptijd = normomlooptijd / input.size();
+        omlooptijd = omlooptijd / input.size();
 
-        System.out.println("SJF: \tWachttijd: " + waittime + "\tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
+        System.out.println("SJF: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
         return voltooid;
     }
 

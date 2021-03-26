@@ -21,7 +21,7 @@ public class ShortestRemainingTime extends Scheduler {
         }
 
         PriorityQueue<Process> voltooid = new PriorityQueue<>();
-        PriorityQueue<Process> wachtende = new PriorityQueue<>(10,(a, b)->a.getServicetime()-b.getServicetime());
+        PriorityQueue<Process> wachtende = new PriorityQueue<>(10,(a, b)->a.getServicetijd()-b.getServicetijd());
         PriorityQueue<Process> huidige = new PriorityQueue<>();
         Process hulp;
 
@@ -32,29 +32,29 @@ public class ShortestRemainingTime extends Scheduler {
                 hulp=huidige.peek();
                 hulp.decreaseServicetime();
 
-                if (hulp.getServicetime()==0){
+                if (hulp.getServicetijd()==0){
                     hulp=huidige.poll();
 
                     assert hulp != null;
-                    hulp.setEndtime(tijdslot);
+                    hulp.setEindtijd(tijdslot);
                     hulp.calculate();
 
                     voltooid.add(hulp);
 
-                    waittime += hulp.getWaittime();
-                    tatnorm += hulp.getTatnorm();
-                    tat += hulp.getTat();
+                    wachttijd += hulp.getWachttijd();
+                    normomlooptijd += hulp.getNormomlooptijd();
+                    omlooptijd += hulp.getOmlooptijd();
                 }
             }
 
-            while(queue.peek() != null && queue.peek().getArrivaltime()<=tijdslot)
+            while(queue.peek() != null && queue.peek().getAankomsttijd()<=tijdslot)
                 wachtende.add(queue.poll());
 
             if(huidige.isEmpty() && !wachtende.isEmpty()){
 
                 hulp=wachtende.poll();
 
-                hulp.setStarttime(tijdslot);
+                hulp.setStarttijd(tijdslot);
 
                 huidige.add(hulp);
 
@@ -62,12 +62,12 @@ public class ShortestRemainingTime extends Scheduler {
                 hulp=huidige.peek();
 
 
-                if(hulp.getServicetimeneeded()>wachtende.peek().getServicetimeneeded()){
+                if(hulp.getServicetijdNodig()>wachtende.peek().getServicetijdNodig()){
                     hulp=huidige.poll();
                     Process process=wachtende.peek();
                     assert process != null;
-                    if(process.getStarttime()==0)
-                        process.setStarttime(tijdslot);
+                    if(process.getStarttijd()==0)
+                        process.setStarttijd(tijdslot);
 
                     huidige.add(wachtende.poll());
                     wachtende.add(hulp);
@@ -77,11 +77,11 @@ public class ShortestRemainingTime extends Scheduler {
             tijdslot++;
 
         }
-        waittime = waittime / input.size();
-        tatnorm = tatnorm / input.size();
-        tat = tat / input.size();
+        wachttijd = wachttijd / input.size();
+        normomlooptijd = normomlooptijd / input.size();
+        omlooptijd = omlooptijd / input.size();
 
-        System.out.println("SRT: \tWachttijd: " + waittime + "   \tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
+        System.out.println("SRT: \tWachttijd: " + wachttijd + "   \tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
         return voltooid;
     }
 

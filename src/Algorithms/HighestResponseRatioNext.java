@@ -9,53 +9,53 @@ import Support.Process;
 public class HighestResponseRatioNext extends Scheduler {
 
     @Override
-    public PriorityQueue<Process> schedule(Queue<Process> queue) {
-        Queue<Process> q = new LinkedList<>();
-        PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        PriorityQueue<Process> waitingProcesses = new PriorityQueue<>(10, Comparator.comparingDouble(Process::getResponseRatio));
-        int timeslot = 0;
-        Process temp;
+    public PriorityQueue<Process> schedule(Queue<Process> input) {
+        Queue<Process> queue = new LinkedList<>();
+        PriorityQueue<Process> voltooid = new PriorityQueue<>();
+        PriorityQueue<Process> wachtende = new PriorityQueue<>(10, Comparator.comparingDouble(Process::getResponsRatio));
+        int tijdslot = 0;
+        Process hulp;
 
         //adding all the processes to the queue
-        for (Process p : queue) {
-            q.add(new Process(p));
+        for (Process process : input) {
+            queue.add(new Process(process));
         }
 
         //repeating algorithm until queue is empty
-        while(finishedProcesses.size()!= queue.size()){
+        while(voltooid.size()!= input.size()){
 
-            while(q.peek() != null && q.peek().getArrivaltime()<= timeslot){
-                waitingProcesses.add(q.poll());
+            while(queue.peek() != null && queue.peek().getAankomsttijd()<= tijdslot){
+                wachtende.add(queue.poll());
             }
 
-            for (Process p : waitingProcesses){
-                double rr=(p.getServicetimeneeded()+(timeslot -p.getArrivaltime())/(p.getServicetimeneeded()));
-                p.setResponseRatio(rr);
+            for (Process p : wachtende){
+                double rr=(p.getServicetijdNodig()+(tijdslot -p.getAankomsttijd())/(p.getServicetijdNodig()));
+                p.setResponsRatio(rr);
             }
 
-            if (!waitingProcesses.isEmpty()) {
+            if (!wachtende.isEmpty()) {
 
-                temp=waitingProcesses.poll();
-                temp.setStarttime(timeslot);
-                timeslot += temp.getServicetime();
-                temp.setEndtime(timeslot);
-                temp.calculate();
-                waittime += temp.getWaittime();
-                tatnorm += temp.getTatnorm();
-                tat += temp.getTat();
-                finishedProcesses.add(temp);
+                hulp=wachtende.poll();
+                hulp.setStarttijd(tijdslot);
+                tijdslot += hulp.getServicetijd();
+                hulp.setEindtijd(tijdslot);
+                hulp.calculate();
+                wachttijd += hulp.getWachttijd();
+                normomlooptijd += hulp.getNormomlooptijd();
+                omlooptijd += hulp.getOmlooptijd();
+                voltooid.add(hulp);
 
             }else {
-                timeslot++;
+                tijdslot++;
             }
         }
 
-        waittime = waittime / queue.size();
-        tatnorm = tatnorm / queue.size();
-        tat = tat / queue.size();
+        wachttijd = wachttijd / input.size();
+        normomlooptijd = normomlooptijd / input.size();
+        omlooptijd = omlooptijd / input.size();
 
-        System.out.println("HRRN: \tWachttijd: " + waittime + "\tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
-        return finishedProcesses;
+        System.out.println("HRRN: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
+        return voltooid;
     }
 
     @Override

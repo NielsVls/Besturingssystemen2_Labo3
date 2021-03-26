@@ -14,91 +14,91 @@ public class RoundRobin extends Scheduler{
     }
 
     @Override
-    public PriorityQueue<Process> schedule(Queue<Process> queue, int slice) {
-        int inputSize = queue.size();
+    public PriorityQueue<Process> schedule(Queue<Process> input, int slice) {
+        int inputSize = input.size();
 
-        Queue<Process> que = new LinkedList<>();
+        Queue<Process> queue = new LinkedList<>();
 
-        for (Process process : queue) {
-            que.add(new Process(process));
+        for (Process process : input) {
+            queue.add(new Process(process));
         }
 
-        PriorityQueue<Process> readyQue = new PriorityQueue<>();
-        PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        Process currentScheduledProcess = null;
-        Process tempProcess;
+        PriorityQueue<Process> gereed = new PriorityQueue<>();
+        PriorityQueue<Process> voltooid = new PriorityQueue<>();
+        Process huidige = null;
+        Process hulp;
 
-        int counter = 0;
+        int tijdslot = 0;
 
-        boolean processFinished = false;
+        boolean processVoltooid = false;
         boolean swap =true;
 
-        while(finishedProcesses.size()!=inputSize){
+        while(voltooid.size()!=inputSize){
 
             //processen toevoegen die gearriveerd zijn.
-            while(!que.isEmpty() && que.peek().getArrivaltime()<=counter ){
-                readyQue.add(que.poll());
+            while(!queue.isEmpty() && queue.peek().getAankomsttijd()<=tijdslot ){
+                gereed.add(queue.poll());
             }
 
             //voorwaarden worden gecheckt voor een swap
-            if (currentScheduledProcess!=null){
-                currentScheduledProcess.decreaseServicetime();
-                if(currentScheduledProcess.getServicetime()==0){
-                    processFinished = true;
+            if (huidige!=null){
+                huidige.decreaseServicetime();
+                if(huidige.getServicetijd()==0){
+                    processVoltooid = true;
                     swap= true;
                 }
             }
-            if(counter%slice==0){
+            if(tijdslot%slice==0){
                 swap = true;
             }
 
             //processor leeg maken als swap toegestaan is
-            if(swap && currentScheduledProcess!=null){
-                tempProcess=currentScheduledProcess;
-                currentScheduledProcess=null;
-                if(processFinished){
-                    tempProcess.setEndtime(counter);
-                    tempProcess.calculate();
+            if(swap && huidige!=null){
+                hulp=huidige;
+                huidige=null;
+                if(processVoltooid){
+                    hulp.setEindtijd(tijdslot);
+                    hulp.calculate();
 
-                    finishedProcesses.add(tempProcess);
+                    voltooid.add(hulp);
 
                     //globale parameters updaten
-                    waittime += tempProcess.getWaittime();
-                    tatnorm += tempProcess.getTatnorm();
-                    tat += tempProcess.getTat();
-                    processFinished=false;
+                    wachttijd += hulp.getWachttijd();
+                    normomlooptijd += hulp.getNormomlooptijd();
+                    omlooptijd += hulp.getOmlooptijd();
+                    processVoltooid=false;
                 }else {
-                    readyQue.add(tempProcess);
+                    gereed.add(hulp);
                 }
-                tempProcess=null;
+                hulp=null;
             }
 
             //process op de processor zetten en counter juist zetten
             if(swap){
-                if(!readyQue.isEmpty()){
-                    tempProcess=readyQue.poll();
-                    if(tempProcess.getStarttime()==-1){
-                        tempProcess.setStarttime(counter);
+                if(!gereed.isEmpty()){
+                    hulp=gereed.poll();
+                    if(hulp.getStarttijd()==-1){
+                        hulp.setStarttijd(tijdslot);
                     }
-                    currentScheduledProcess=tempProcess;
-                }else if(!que.isEmpty()){
-                    tempProcess=que.poll();
-                    counter=tempProcess.getArrivaltime();
-                    tempProcess.setStarttime(counter);
-                    currentScheduledProcess=tempProcess;
+                    huidige=hulp;
+                }else if(!queue.isEmpty()){
+                    hulp=queue.poll();
+                    tijdslot=hulp.getAankomsttijd();
+                    hulp.setStarttijd(tijdslot);
+                    huidige=hulp;
                 }
-                tempProcess=null;
+                hulp=null;
                 swap=false;
             }
-            counter++;
+            tijdslot++;
         }
 
-        waittime = waittime / queue.size();
-        tatnorm = tatnorm / queue.size();
-        tat = tat / queue.size();
+        wachttijd = wachttijd / input.size();
+        normomlooptijd = normomlooptijd / input.size();
+        omlooptijd = omlooptijd / input.size();
 
-        System.out.println("RR " + slice + ": \tWachttijd: " + waittime + "\tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
-        return finishedProcesses;
+        System.out.println("RR " + slice + ": \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
+        return voltooid;
     }
 
 }

@@ -2,93 +2,93 @@ package Support;
 
 public class Process extends ReadXML implements Cloneable, Comparable {
 
-    private int id, starttime, tat, waittime, servicetime, endtime, servicetimeneeded, arrivaltime, priority;
-    private double tatnorm, responseRatio;
+    private int id, starttijd, omlooptijd, wachttijd, servicetijd, eindtijd, servicetijdNodig, aankomsttijd, prioriteit;
+    private double normomlooptijd, responsRatio;
 
-    public Process(int id, int arrivaltime, int servicetime) {
+    public Process(int id, int aankomsttijd, int servicetijd) {
         this.id = id;
-        this.arrivaltime = arrivaltime;
-        this.servicetime = servicetime;
-        this.servicetimeneeded = servicetime;
-        this.responseRatio = 0;
-        this.priority = 0;
-        this.starttime= -1;
+        this.aankomsttijd = aankomsttijd;
+        this.servicetijd = servicetijd;
+        this.servicetijdNodig = servicetijd;
+        this.responsRatio = 0;
+        this.prioriteit = 0;
+        this.starttijd = -1;
     }
     public Process(Process p) {
-        this.arrivaltime = p.arrivaltime;
-        this.servicetime = p.servicetime;
-        this.servicetimeneeded = p.servicetimeneeded;
+        this.aankomsttijd = p.aankomsttijd;
+        this.servicetijd = p.servicetijd;
+        this.servicetijdNodig = p.servicetijdNodig;
         this.id = p.id;
-        this.responseRatio = p.responseRatio;
+        this.responsRatio = p.responsRatio;
     }
 
     //getters
-    public int getArrivaltime() {
-        return arrivaltime;
+    public int getAankomsttijd() {
+        return aankomsttijd;
     }
-    public int getServicetime() {
-        return servicetime;
+    public int getServicetijd() {
+        return servicetijd;
     }
-    public int getStarttime() {
-        return starttime;
+    public int getStarttijd() {
+        return starttijd;
     }
-    public int getTat() {
-        return tat;
+    public int getOmlooptijd() {
+        return omlooptijd;
     }
-    public double getTatnorm() {
-        return tatnorm;
+    public double getNormomlooptijd() {
+        return normomlooptijd;
     }
-    public int getWaittime() {
-        return waittime;
+    public int getWachttijd() {
+        return wachttijd;
     }
-    public int getServicetimeneeded() {
-        return servicetimeneeded;
+    public int getServicetijdNodig() {
+        return servicetijdNodig;
     }
-    public double getResponseRatio() {
-        return responseRatio;
+    public double getResponsRatio() {
+        return responsRatio;
     }
-    public int getPriority() {
-        return priority;
+    public int getPrioriteit() {
+        return prioriteit;
     }
 
     //setters
-    public void setArrivaltime(int arrivaltime) {
-        this.arrivaltime = arrivaltime;
+    public void setAankomsttijd(int aankomsttijd) {
+        this.aankomsttijd = aankomsttijd;
     }
-    public void setServicetime(int servicetime) {
-        this.servicetime = servicetime;
+    public void setServicetijd(int servicetijd) {
+        this.servicetijd = servicetijd;
     }
-    public void setStarttime(int starttime) {
-        this.starttime = starttime;
+    public void setStarttijd(int starttijd) {
+        this.starttijd = starttijd;
     }
-    public void setEndtime(int endtime) {
-        this.endtime = endtime;
+    public void setEindtijd(int eindtijd) {
+        this.eindtijd = eindtijd;
     }
-    public void setResponseRatio(double responseRatio) {
-        this.responseRatio = responseRatio;
+    public void setResponsRatio(double responsRatio) {
+        this.responsRatio = responsRatio;
     }
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setPrioriteit(int prioriteit) {
+        this.prioriteit = prioriteit;
     }
 
     //other methods
     public void decreaseServicetime() {
-        servicetime--;
+        servicetijd--;
     }
     public void increasePriority() {
-        priority++;
+        prioriteit++;
     }
     public void calculate() {
-        this.tat = endtime - arrivaltime;
-        this.tatnorm = (double) this.tat / servicetimeneeded;
-        this.waittime = endtime - arrivaltime - servicetimeneeded;
+        this.omlooptijd = eindtijd - aankomsttijd;
+        this.normomlooptijd = (double) this.omlooptijd / servicetijdNodig;
+        this.wachttijd = eindtijd - aankomsttijd - servicetijdNodig;
     }
 
     //compare method
     @Override
     public int compareTo(Object o) {
         Process p = (Process) o;
-        return this.servicetimeneeded < p.servicetimeneeded ? -1 : 1;
+        return this.servicetijdNodig < p.servicetijdNodig ? -1 : 1;
     }
 }
 

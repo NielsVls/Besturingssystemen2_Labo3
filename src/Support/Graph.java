@@ -214,20 +214,20 @@ public class Graph {
         int aantal = 0;
         int percentielSize = queue.size() / 100;
 
-        double tatnorm = 0;
-        double excute = 0;
+        double normomlooptijd = 0;
+        double serviceTijd = 0;
 
         while (!queue.isEmpty()) {
             p = queue.poll();
-            tatnorm += p.getTatnorm();
-            excute += p.getServicetimeneeded();
+            normomlooptijd += p.getNormomlooptijd();
+            serviceTijd += p.getServicetijdNodig();
 
             if (aantal % percentielSize == 0 && aantal != 0) {
-                tatnorm = tatnorm / percentielSize ;
-                excute = excute / percentielSize;
-                series.getData().add(new XYChart.Data(excute/4, tatnorm));
-                tatnorm = 0;
-                excute = 0;
+                normomlooptijd = normomlooptijd / percentielSize ;
+                serviceTijd = serviceTijd / percentielSize;
+                series.getData().add(new XYChart.Data(serviceTijd/4, normomlooptijd));
+                normomlooptijd = 0;
+                serviceTijd = 0;
             }
             aantal++;
         }
@@ -239,22 +239,22 @@ public class Graph {
         int aantal = 0;
         int percentielSize = queue.size() / 100;
 
-        double waittime = 0;
-        double excute = 0;
+        double wachttijd = 0;
+        double serviceTijd = 0;
 
         while (!queue.isEmpty()) {
 
             p = queue.poll();
-            waittime += p.getWaittime();
-            excute += p.getServicetimeneeded();
+            wachttijd += p.getWachttijd();
+            serviceTijd += p.getServicetijdNodig();
 
             //per percentiel toevoegen
             if (aantal % percentielSize == 0 && aantal != 0) {
-                waittime = waittime / percentielSize;
-                excute = excute / percentielSize;
-                series.getData().add(new XYChart.Data(excute/4, waittime));
-                waittime = 0;
-                excute = 0;
+                wachttijd = wachttijd / percentielSize;
+                serviceTijd = serviceTijd / percentielSize;
+                series.getData().add(new XYChart.Data(serviceTijd/4, wachttijd));
+                wachttijd = 0;
+                serviceTijd = 0;
             }
             aantal++;
         }

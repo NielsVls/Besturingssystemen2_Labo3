@@ -8,49 +8,49 @@ import Support.Process;
 public class FirstComeFirstServed extends Scheduler {
 
     @Override
-    public PriorityQueue<Process> schedule(Queue<Process> queue) throws NullPointerException {
+    public PriorityQueue<Process> schedule(Queue<Process> input) throws NullPointerException {
 
-        Queue<Process> q = new LinkedList<>();
-        PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        int timeslot = 0;
-        Process tmp;
+        Queue<Process> queue = new LinkedList<>();
+        PriorityQueue<Process> voltooid = new PriorityQueue<>();
+        int tijdslot = 0;
+        Process hulp;
 
         //adding all the processes to the queue
-        for (Process p : queue) {
-            q.add(new Process(p));
+        for (Process process : input) {
+            queue.add(new Process(process));
         }
 
         //repeating algorithm until queue is empty
-        while (!q.isEmpty()) {
-            tmp = q.poll();
-            if (timeslot < tmp.getArrivaltime()) {
+        while (!queue.isEmpty()) {
+            hulp = queue.poll();
+            if (tijdslot < hulp.getAankomsttijd()) {
 
-                timeslot = tmp.getArrivaltime() + tmp.getServicetime();
-                tmp.setStarttime(tmp.getArrivaltime());
+                tijdslot = hulp.getAankomsttijd() + hulp.getServicetijd();
+                hulp.setStarttijd(hulp.getAankomsttijd());
 
             } else {
 
-                tmp.setStarttime(timeslot);
-                timeslot += tmp.getServicetime();
+                hulp.setStarttijd(tijdslot);
+                tijdslot += hulp.getServicetijd();
 
             }
 
-            tmp.setEndtime(timeslot);
-            tmp.calculate();
-            finishedProcesses.add(tmp);
-            waittime += tmp.getWaittime();
-            tatnorm += tmp.getTatnorm();
-            tat += tmp.getTat();
+            hulp.setEindtijd(tijdslot);
+            hulp.calculate();
+            voltooid.add(hulp);
+            wachttijd += hulp.getWachttijd();
+            normomlooptijd += hulp.getNormomlooptijd();
+            omlooptijd += hulp.getOmlooptijd();
 
         }
 
         //gemiddelde waarden berekenen
-        waittime = waittime / queue.size();
-        tatnorm = tatnorm / queue.size();
-        tat = tat / queue.size();
+        wachttijd = wachttijd / input.size();
+        normomlooptijd = normomlooptijd / input.size();
+        omlooptijd = omlooptijd / input.size();
 
-        System.out.println("FCFS: \tWachttijd: " + waittime + "\tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
-        return finishedProcesses;
+        System.out.println("FCFS: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
+        return voltooid;
     }
 
     @Override

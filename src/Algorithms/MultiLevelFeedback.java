@@ -10,103 +10,103 @@ public class MultiLevelFeedback extends Scheduler {
 
     @Override
     public PriorityQueue<Process> schedule(Queue<Process> input, int slice) {
-        Queue<Process> inputQue = new LinkedList<>();
-        PriorityQueue<Process> waitingQue0 = new PriorityQueue<>();
-        PriorityQueue<Process> waitingQue1 = new PriorityQueue<>();
-        PriorityQueue<Process> waitingQue2 = new PriorityQueue<>();
-        PriorityQueue<Process> finishedProcesses = new PriorityQueue<>();
-        PriorityQueue<Process> currentProcess = new PriorityQueue<>();
+        Queue<Process> queue = new LinkedList<>();
+        PriorityQueue<Process> wachtende0 = new PriorityQueue<>();
+        PriorityQueue<Process> wachtende1 = new PriorityQueue<>();
+        PriorityQueue<Process> wachtende2 = new PriorityQueue<>();
+        PriorityQueue<Process> voltooid = new PriorityQueue<>();
+        PriorityQueue<Process> huidige = new PriorityQueue<>();
         int slice2 = slice * 2;
-        Process temp;
-        int timeslot = 0;
+        Process hulp;
+        int tijdslot = 0;
 
-        for (Process p : input) {
-            inputQue.add(new Process(p));
+        for (Process process : input) {
+            queue.add(new Process(process));
         }
 
 
-        int currentSlice = 0;
-        int tempCounter = 0;
+        int huidigeSlice = 0;
+        int hulpteller = 0;
         boolean swap = false;
 
-        while (finishedProcesses.size() != input.size()) {
+        while (voltooid.size() != input.size()) {
 
-            if (!currentProcess.isEmpty()) {
-                currentProcess.peek().decreaseServicetime();
-                tempCounter++;
+            if (!huidige.isEmpty()) {
+                huidige.peek().decreaseServicetime();
+                hulpteller++;
             }
 
-            if (currentSlice == tempCounter)
+            if (huidigeSlice == hulpteller)
                 swap = true;
-            else if (!currentProcess.isEmpty()) {
-                if (currentProcess.peek().getServicetime() == 0)
+            else if (!huidige.isEmpty()) {
+                if (huidige.peek().getServicetijd() == 0)
                     swap = true;
             }
 
-            while (inputQue.peek() != null) {
-                assert inputQue.peek() != null;
-                if (!(inputQue.peek().getArrivaltime() <= timeslot)) break;
-                waitingQue0.add(inputQue.poll());
+            while (queue.peek() != null) {
+                assert queue.peek() != null;
+                if (!(queue.peek().getAankomsttijd() <= tijdslot)) break;
+                wachtende0.add(queue.poll());
             }
 
             if (swap) {
-                if (!currentProcess.isEmpty()) {
-                    temp = currentProcess.poll();
-                    if (temp.getServicetime() == 0) {
+                if (!huidige.isEmpty()) {
+                    hulp = huidige.poll();
+                    if (hulp.getServicetijd() == 0) {
 
-                        temp.setEndtime(timeslot);
-                        temp.calculate();
-                        currentSlice = 0;
-                        tempCounter = 0;
-                        finishedProcesses.add(temp);
-                        waittime += temp.getWaittime();
-                        tatnorm += temp.getTatnorm();
-                        tat += temp.getTat();
+                        hulp.setEindtijd(tijdslot);
+                        hulp.calculate();
+                        huidigeSlice = 0;
+                        hulpteller = 0;
+                        voltooid.add(hulp);
+                        wachttijd += hulp.getWachttijd();
+                        normomlooptijd += hulp.getNormomlooptijd();
+                        omlooptijd += hulp.getOmlooptijd();
 
                     } else {
-                        temp.increasePriority();
-                        int tempPrior = temp.getPriority();
+                        hulp.increasePriority();
+                        int tempPrior = hulp.getPrioriteit();
                         if (tempPrior == 1)
-                            waitingQue1.add(temp);
+                            wachtende1.add(hulp);
                         else if (tempPrior == 2)
-                            waitingQue2.add(temp);
+                            wachtende2.add(hulp);
 
                     }
 
                 } else {
-                    if (!waitingQue0.isEmpty()) {
-                        temp = waitingQue0.poll();
-                        temp.setStarttime(timeslot);
-                        temp.setPriority(0);
-                        currentSlice = slice;
-                        tempCounter = 0;
-                        currentProcess.add(temp);
-                    } else if (!waitingQue1.isEmpty()) {
-                        temp = waitingQue1.poll();
-                        temp.setPriority(1);
-                        currentSlice = slice2;
-                        tempCounter = 0;
-                        currentProcess.add(temp);
-                    } else if (!waitingQue2.isEmpty()) {
-                        temp = waitingQue2.poll();
-                        temp.setPriority(2);
-                        currentSlice = -1;
-                        tempCounter = 0;
-                        currentProcess.add(temp);
+                    if (!wachtende0.isEmpty()) {
+                        hulp = wachtende0.poll();
+                        hulp.setStarttijd(tijdslot);
+                        hulp.setPrioriteit(0);
+                        huidigeSlice = slice;
+                        hulpteller = 0;
+                        huidige.add(hulp);
+                    } else if (!wachtende1.isEmpty()) {
+                        hulp = wachtende1.poll();
+                        hulp.setPrioriteit(1);
+                        huidigeSlice = slice2;
+                        hulpteller = 0;
+                        huidige.add(hulp);
+                    } else if (!wachtende2.isEmpty()) {
+                        hulp = wachtende2.poll();
+                        hulp.setPrioriteit(2);
+                        huidigeSlice = -1;
+                        hulpteller = 0;
+                        huidige.add(hulp);
                     }
                 }
                 swap = false;
             }
-            timeslot++;
+            tijdslot++;
         }
 
         //gemiddeldes berekenen
-        waittime = waittime / input.size();
-        tatnorm = tatnorm / input.size();
-        tat = tat / input.size();
+        wachttijd = wachttijd / input.size();
+        normomlooptijd = normomlooptijd / input.size();
+        omlooptijd = omlooptijd / input.size();
 
-        System.out.println("MLF: \tWachttijd: " + waittime + "\tGenorm. Omlooptijd: " + tatnorm + "\tOmlooptijd: " + tat);
-        return finishedProcesses;
+        System.out.println("MLF: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
+        return voltooid;
     }
 
     @Override
