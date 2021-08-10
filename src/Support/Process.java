@@ -79,9 +79,18 @@ public class Process extends ReadXML implements Cloneable, Comparable {
         prioriteit++;
     }
     public void calculate() {
+        if((eindtijd - aankomsttijd)<0){
+            this.omlooptijd =0;
+        }else{
         this.omlooptijd = eindtijd - aankomsttijd;
+            }
+            
         this.normomlooptijd = (double) this.omlooptijd / servicetijdNodig;
+        if((eindtijd - aankomsttijd - servicetijdNodig)<0){
+            this.wachttijd=0;
+        }else{
         this.wachttijd = eindtijd - aankomsttijd - servicetijdNodig;
+            }
     }
 
     //compare method

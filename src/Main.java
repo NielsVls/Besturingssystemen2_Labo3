@@ -20,10 +20,16 @@ public class Main extends Application {
         int choice1=sc.nextInt();
 
         //hier wordt de tweede keuze gemaakt
-        System.out.println("Wat is het aantal processen die u wilt gebruiken?");
-        System.out.println("a) 10.000 processen");
-        System.out.println("b) 20.000 processen");
-        System.out.println("c) 50.000 processen");
+        System.out.println("Welk algoritme?");
+        System.out.println("a) FCFS");
+        System.out.println("b) SJF");
+        System.out.println("c) HRRN");
+        System.out.println("d) MLF");
+        System.out.println("e) RR");
+        System.out.println("f) SRT");
+        System.out.println("g) Allemaal (1 processor)");
+        System.out.println("h) Allemaal (2 processoren)");
+        System.out.println("i) Allemaal (4 processoren)");
         String choice2=sc.next();
 
         //vermenigvuldigen van deze 2 keuzes leidt tot slechts 1 mogelijkheid
@@ -33,17 +39,41 @@ public class Main extends Application {
         System.out.println("~~~~~~~~~~Dit zijn de gemiddelde waarden voor de verschillende scheduling algoritmen~~~~~~~~~~");
         switch(choice){
             case "1a":
-                graph.TatNorm(stage,10000);break;
+                graph.FCFS(stage, 50000);break;
             case "1b":
-                graph.TatNorm(stage,20000);break;
+                graph.SJF(stage, 50000);break;
             case "1c":
-                graph.TatNorm(stage,50000);break;
+                graph.HRRN(stage, 50000);break;
+            case "1d":
+                graph.MLF(stage, 50000);break;
+            case "1e":
+                graph.RR(stage, 50000);break;
+            case "1f":
+                graph.SRT(stage, 50000);break;
+            case "1g":
+                graph.TatNorm(stage, 50000);break;
+            case "1h":
+                graph.TatNorm2(stage, 50000);break;
+            case "1i":
+                graph.TatNorm4(stage, 50000);break;
             case "2a":
-                graph.Wacht(stage,10000);break;
+                graph.WaitFCFS(stage, 50000);break;
             case "2b":
-                graph.Wacht(stage,20000);break;
+                graph.WaitSJF(stage, 50000);break;
             case "2c":
-                graph.Wacht(stage,50000);break;
+                graph.WaitHRRN(stage, 50000);break;
+            case "2d":
+                graph.WaitMLF(stage, 50000);break;
+            case "2e":
+                graph.WaitRR(stage, 50000);break;
+            case "2f":
+                graph.WaitSRT(stage, 50000);break;
+            case "2g":
+                graph.Wacht(stage, 50000);break;
+            case "2h":
+                graph.Wacht2(stage, 50000);break;
+            case "2i":
+                graph.Wacht4(stage, 50000);break;
             default:
                 System.out.println("Dit was geen geldige keuze."); break;
         }
