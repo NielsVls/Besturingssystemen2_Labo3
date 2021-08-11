@@ -67,7 +67,7 @@ public class MultiSJF extends Scheduler {
         normomlooptijd = normomlooptijd / input.size();
         omlooptijd = omlooptijd / input.size();
         wachttijd = wachttijd / aantal;
-        normomlooptijd = normomlooptijd / aantal;
+        
         omlooptijd = omlooptijd / aantal;
 
         System.out.println("SJF: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);

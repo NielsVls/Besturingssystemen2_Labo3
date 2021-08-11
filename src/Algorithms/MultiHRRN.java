@@ -25,7 +25,6 @@ public class MultiHRRN extends Scheduler {
         Queue<Process> queue = new LinkedList<>();
         PriorityQueue<Process> voltooid = new PriorityQueue<>();
         PriorityQueue<Process> wachtende = new PriorityQueue<>(10, Comparator.comparingDouble(Process::getResponsRatio));
-        int tijdslot = 0;
         Process hulp;
 
         //adding all the processes to the queue
@@ -70,7 +69,7 @@ public class MultiHRRN extends Scheduler {
         normomlooptijd = normomlooptijd / input.size();
         omlooptijd = omlooptijd / input.size();
         wachttijd = wachttijd / aantal;
-        normomlooptijd = normomlooptijd / aantal;
+        
         omlooptijd = omlooptijd / aantal;
 
         System.out.println("HRRN: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);

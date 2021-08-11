@@ -130,7 +130,7 @@ public class Graph {
         yAxis.setLabel("Genormaliseerde omlooptijd");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(20);
+        yAxis.setUpperBound(10);
         yAxis.setTickUnit(2);
 
         //grafiek aanmaken
@@ -206,8 +206,8 @@ public class Graph {
         yAxis.setLabel("Genormaliseerde omlooptijd");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(20);
-        yAxis.setTickUnit(2);
+        yAxis.setUpperBound(4);
+        yAxis.setTickUnit(0.5);
 
         //grafiek aanmaken
         final LineChart<Number, Number> Graph = new LineChart<>(xAxis, yAxis);
@@ -376,8 +376,8 @@ public class Graph {
         yAxis.setLabel("Wachttijd");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(2000);
-        yAxis.setTickUnit(200);
+        yAxis.setUpperBound(100);
+        yAxis.setTickUnit(10);
 
         //grafiek aanmaken
         final LineChart<Number, Number> Graph = new LineChart<>(xAxis, yAxis);
@@ -452,8 +452,8 @@ public class Graph {
         yAxis.setLabel("Wachttijd");
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(2000);
-        yAxis.setTickUnit(200);
+        yAxis.setUpperBound(10);
+        yAxis.setTickUnit(1);
 
         //grafiek aanmaken
         final LineChart<Number, Number> Graph = new LineChart<>(xAxis, yAxis);

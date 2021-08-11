@@ -97,7 +97,7 @@ public class MultiSRT extends Scheduler {
         normomlooptijd = normomlooptijd / input.size();
         omlooptijd = omlooptijd / input.size();
         wachttijd = wachttijd / aantal;
-        normomlooptijd = normomlooptijd / aantal;
+        
         omlooptijd = omlooptijd / aantal;
 
         System.out.println("SRT: \tWachttijd: " + wachttijd + "   \tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);

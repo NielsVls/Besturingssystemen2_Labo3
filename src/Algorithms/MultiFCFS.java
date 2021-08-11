@@ -65,7 +65,7 @@ public class MultiFCFS extends Scheduler {
         normomlooptijd = normomlooptijd / input.size();
         omlooptijd = omlooptijd / input.size();
         wachttijd = wachttijd / aantal;
-        normomlooptijd = normomlooptijd / aantal;
+        
         omlooptijd = omlooptijd / aantal;
 
         System.out.println("FCFS: \tWachttijd: " + wachttijd + "\tGenorm. Omlooptijd: " + normomlooptijd + "\tOmlooptijd: " + omlooptijd);
